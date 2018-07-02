@@ -14,6 +14,5 @@ if ( ! defined('WP_CLI') || ! WP_CLI ) {
 use YamlFixtures\FixtureCommand;
 
 require_once __DIR__ . '/vendor/autoload.php';
-require_once __DIR__ . '/vendor/danielbachhuber/dictator/dictator.php';
 
 WP_CLI::add_command('fixture', new FixtureCommand());
