@@ -1,7 +1,8 @@
 {
-    "name": "acobster/wp-yaml-fixtures",
+    "name": "acobster/wp-cli-yaml-fixtures",
     "description": "Define WordPress database snapshots as simple YAML files",
     "license": "MIT",
+    "type": "wp-cli-command",
     "authors": [
         {
             "name": "Coby Tamayo",
