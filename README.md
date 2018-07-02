@@ -113,12 +113,18 @@ posts:
   type: page
   # oh and I want to nest this page
   parent: bar
+  
+  # specify arbitrary meta fields
   meta:
     my_custom_field: Some custom value
+
+    # specify multiple values for the same key!
+    # these will be inserted as three wp_postmeta rows
     another_field:
     - 'value #1'
     - 'value #2'
     - 'value #3'
+
   terms:
     page_type:
     - custom-term-slug
