@@ -1,5 +1,5 @@
 {
-    "name": "sitecrafting/wp-yaml-fixtures",
+    "name": "acobster/wp-yaml-fixtures",
     "description": "Define WordPress database snapshots as simple YAML files",
     "license": "MIT",
     "authors": [
