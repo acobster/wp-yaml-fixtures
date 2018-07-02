@@ -1,6 +1,6 @@
 # WP YAML Fixtures
 
-A WP-CLI command for describing your WordPress database content in, and importing from  YAML files. Built for testing and scaffolding quickly.
+A WP-CLI command for describing your WordPress database content in, and importing from, YAML files. Built for testing and scaffolding quickly.
 
 ### Getting Started
 
@@ -50,7 +50,7 @@ Run the WP-CLI command.
 wp fixture install my-example.yaml
 ```
 
-
+💥 Your database has now been cleaned and populated with fresh data. 💥
 
 ### YAML for Days!
 
