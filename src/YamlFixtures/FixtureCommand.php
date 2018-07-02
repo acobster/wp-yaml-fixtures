@@ -36,6 +36,9 @@ class FixtureCommand extends WP_CLI_Command {
    * Default: false
    * ---
    *
+   * [--yes]
+   * : Confirm all prompts.
+   *
    * ## EXAMPLES
    *
    *   wp fixture install example.yaml
@@ -44,6 +47,8 @@ class FixtureCommand extends WP_CLI_Command {
    */
   function install( $args, $assoc_args ) {
     $file = $args[0];
+
+    WP_CLI::confirm( 'This will destroy your database content. Are you sure?', $assoc_args );
 
     try {
       $definitions = Yaml::parseFile($file);
