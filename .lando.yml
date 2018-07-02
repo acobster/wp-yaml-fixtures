@@ -1,0 +1,51 @@
+name: yaml-fixtures
+recipe: wordpress
+config:
+  webroot: wp
+  php: '7.1'
+
+services:
+  appserver:
+    run:
+      - cd $LANDO_MOUNT && composer install
+      - cd $LANDO_MOUNT && scripts/setup-wp.sh
+
+    overrides:
+      services:
+        environment:
+          # Pass any non-empty CI envvar from the host into Lando
+          # This is so we can force non-interactive mode setting up WP
+          CI: ${CI:-''}
+
+  database:
+    type: mysql:5.7
+
+tooling:
+  install:
+    service: appserver
+    cmd: '/app/scripts/setup-wp.sh'
+    description: 'Install and configure WordPress for custom plugin dev'
+
+  debug:
+    service: appserver
+    cmd: 'tail -f /app/wp/wp-content/debug.log'
+    description: 'Get real-time debug log output'
+
+  unit:
+    service: appserver
+    cmd: 'vendor/bin/phpunit'
+    description: 'Run unit tests'
+
+  sniff:
+    service: appserver
+    cmd: 'composer sniff'
+    description: 'Run phpcs code sniffer'
+
+  release:
+    service: appserver
+    cmd: '/app/scripts/build-release.sh'
+    description: 'Build a downloadable release of the YAML WP Fixtures plugin'
+
+proxy:
+  appserver:
+    - yaml-fixtures.lndo.site
