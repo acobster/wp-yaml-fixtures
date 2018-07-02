@@ -1,0 +1,23 @@
+{
+    "name": "sitecrafting/wp-yaml-fixtures",
+    "description": "Define WordPress database snapshots as simple YAML files",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Coby Tamayo",
+            "email": "ctamayo@sitecrafting.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+      "php": ">=7.0",
+      "danielbachhuber/dictator": "^0.1",
+      "symfony/yaml": "^3.4"
+    },
+    "require-dev": {},
+    "autoload": {
+        "psr-4": {
+            "YamlFixtures\\": "src/YamlFixtures"
+        }
+    }
+}
