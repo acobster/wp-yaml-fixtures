@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * YamlFixtures\FixtureCommand class
+ */
+
 namespace YamlFixtures;
 
 use Symfony\Component\Yaml\Yaml;
@@ -13,6 +17,9 @@ use YamlFixtures\Fixture\UsersFixture;
 use YamlFixtures\Fixture\TaxonomiesFixture;
 use YamlFixtures\Fixture\PostsFixture;
 
+/**
+ * WP-CLI command for installing YAML fixtures
+ */
 class FixtureCommand extends WP_CLI_Command {
   const FIXTURE_ORDER = [
     BlankSlateFixture::class,
@@ -45,7 +52,7 @@ class FixtureCommand extends WP_CLI_Command {
    *
    * @when after_wp_load
    */
-  function install( $args, $assoc_args ) {
+  public function install( $args, $assoc_args ) {
     $file = $args[0];
 
     WP_CLI::confirm( 'This will destroy your database content. Are you sure?', $assoc_args );
@@ -67,6 +74,13 @@ class FixtureCommand extends WP_CLI_Command {
     }
   }
 
+  /**
+   * Create and sort Fixture instances from a YAML-defined array
+   *
+   * @param array $definitions the array of fixture definitions, as defined
+   * in the YAML fixture file
+   * @return array the Fixture instances, sorted by run order
+   */
   protected function compileFixtures(array $definitions) {
     $fixtures = array_map(
       [FixtureFactory::class, 'create'],

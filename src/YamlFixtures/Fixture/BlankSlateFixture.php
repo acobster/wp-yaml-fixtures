@@ -1,21 +1,33 @@
 <?php
 
+/**
+ * BlankSlateFixture class
+ */
+
 namespace YamlFixtures\Fixture;
 
 use WP_User;
 
+/**
+ * Class for wiping WP database of users, posts, etc.
+ */
 class BlankSlateFixture extends Fixture {
   const POST_STATUSES = [
     'publish',
     'pending',
-        'draft',
-        'auto-draft',
-        'future',
-        'private',
-        'inherit',
-        'trash',
+    'draft',
+    'auto-draft',
+    'future',
+    'private',
+    'inherit',
+    'trash',
   ];
 
+  /**
+   * Install this fixture.
+   *
+   * @inheritdoc
+   */
   public function install() : bool {
     // TODO just call WP_CLI db reset
     foreach (get_post_types() as $type) {
@@ -51,6 +63,12 @@ class BlankSlateFixture extends Fixture {
     return true;
   }
 
+  /**
+   * Whether to preserve the given WP_User from the blank-slate wipe
+   *
+   * @param WP_User $user the user in question
+   * @return bool
+   */
   protected function preserve_user(WP_User $user) {
     $exemptions = $this->definition['preserve_users'] ?? null;
     if (!$exemptions) {
@@ -58,8 +76,8 @@ class BlankSlateFixture extends Fixture {
       return false;
     }
 
-    return in_array($user->ID, $exemptions)
-      || in_array($user->user_login, $exemptions)
-      || in_array($user->user_email, $exemptions);
+    return in_array($user->ID, $exemptions, true)
+      || in_array($user->user_login, $exemptions, true)
+      || in_array($user->user_email, $exemptions, true);
   }
 }
