@@ -1,0 +1,34 @@
+#
+# WP YAML Fixtures build process for Travis CI
+#
+
+
+#
+# !!! IMPORTANT !!!
+#
+# "without the top-level `env`, no job will be allowed to fail."
+# https://docs.travis-ci.com/user/customizing-the-build/
+#
+# uncomment this line to allow some jobs to fail:
+#env:
+
+
+language: php
+
+install: composer install --prefer-dist
+
+script:
+  - composer test
+  - composer sniff
+
+
+# Test WP YAML Fixtures against PHP 7.x and run end-to-end tests
+matrix:
+  include:
+    - name: '7.0 unit tests'
+      php: 7.0
+    - name: '7.1 unit tests'
+      php: 7.1
+    - name: '7.2 unit tests'
+      php: 7.2
+
