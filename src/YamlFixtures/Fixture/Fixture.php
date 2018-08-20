@@ -24,6 +24,11 @@ abstract class Fixture {
 
   protected $definition;
 
+  /**
+   * Install this fixture.
+   *
+   * @return bool true on success, false otherwise
+   */
   abstract public function install() : bool;
 
   // TODO
