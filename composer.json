@@ -25,5 +25,19 @@
         "psr-4": {
             "YamlFixtures\\": "src/YamlFixtures"
         }
-    }
+    },
+		"scripts": {
+				"test": [
+						"./vendor/bin/phpunit"
+				],
+				"sniff-summary": [
+						"./vendor/bin/phpcs --report=summary --standard=./phpcs.xml yaml-fixtures.php test src"
+				],
+				"sniff": [
+						"./vendor/bin/phpcs --standard=./phpcs.xml yaml-fixtures.php test src"
+				],
+				"sniff-fix": [
+						"./vendor/bin/phpcbf --standard=./phpcs.xml yaml-fixtures.php test src"
+				]
+		}
 }
