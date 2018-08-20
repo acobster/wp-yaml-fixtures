@@ -61,7 +61,6 @@ class FixtureCommand extends WP_CLI_Command {
     }
 
     // TODO override --blank-slate
-
     foreach ($this->compileFixtures($definitions) as $fixture) {
       // TODO try/catch, --force option
       $fixture->install();

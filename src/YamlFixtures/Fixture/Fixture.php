@@ -28,7 +28,6 @@ abstract class Fixture {
 
   // TODO
   // abstract public function generate() : string;
-
   public function __construct(string $key, $definition) {
     $this->key        = $key;
     $this->definition = $definition;
@@ -42,11 +41,11 @@ abstract class Fixture {
     return array_reduce(array_keys($definition), function(
       array $args,
       string $key
-    ) use($definition) {
+    ) use ($definition) {
       $args[$this->name($key)] = $definition[$key];
 
       foreach (static::FILTERS as $k => $default) {
-        $value = $args[$k] ?? null;
+        $value    = $args[$k] ?? null;
         $args[$k] = $this->filter_value($value, $default);
       }
 

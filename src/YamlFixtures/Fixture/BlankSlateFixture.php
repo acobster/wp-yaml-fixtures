@@ -8,17 +8,16 @@ class BlankSlateFixture extends Fixture {
   const POST_STATUSES = [
     'publish',
     'pending',
-		'draft',
-		'auto-draft',
-		'future',
-		'private',
-		'inherit',
-		'trash',
+        'draft',
+        'auto-draft',
+        'future',
+        'private',
+        'inherit',
+        'trash',
   ];
 
   public function install() : bool {
     // TODO just call WP_CLI db reset
-
     foreach (get_post_types() as $type) {
       $posts = get_posts([
         'post_type'   => $type,
