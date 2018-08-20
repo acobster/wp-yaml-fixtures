@@ -2,7 +2,15 @@
 
 namespace YamlFixtures\Fixture;
 
+use RandomLib\Factory;
+
 class UsersFixture extends Fixture {
+  /**
+   * The character set to user for generating random passwords
+   */
+  const PASSWORD_CHARACTERS =
+    '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/!@#$%^&*():;';
+
   const NAMES = [
     'email'    => 'user_email',
     'login'    => 'user_login',
@@ -85,7 +93,6 @@ class UsersFixture extends Fixture {
   }
 
   protected function generate_password() {
-    // TODO RandomLib
-    return 'asdf';
+    return (new Factory())->getMediumStrengthGenerator()->generateString(32);
   }
 }
