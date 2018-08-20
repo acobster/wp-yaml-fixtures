@@ -66,4 +66,16 @@ abstract class Fixture {
     // filter is a simple default value
     return $value ?? $filter;
   }
+
+  /**
+   * Filter out keys that are not present among `$keys`
+   *
+   * @param array $args the array to be filtered
+   * @param array $keys a numeric array of keys to safelist
+   * @return array a copy of `$args` filtered down to just keys present in
+   * `$keys`
+   */
+  protected function filter_array_keys(array $args, array $keys) {
+    return array_intersect_key($args, array_flip($keys));
+  }
 }
