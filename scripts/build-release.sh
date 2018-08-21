@@ -23,6 +23,10 @@ function fail() {
 }
 
 function main() {
+  if ! [[ -f ./yaml-fixtures.php ]] ; then
+    fail 'Error: not in root wp-yaml-fixtures directory?'
+  fi
+
   RELEASE="$1"
 
   if [[ -z "$RELEASE" ]] ; then
@@ -61,20 +65,28 @@ function main() {
 
   backup_vendor
 
-  archive_name="wp-yaml-fixtures-${RELEASE}.tar.gz"
+  tar_name="wp-yaml-fixtures-${RELEASE}.tar.gz"
+  zip_name="wp-yaml-fixtures-${RELEASE}.zip"
   composer install --no-dev --prefer-dist
 
-  tar -cvzf "$archive_name" \
-    yaml-fixtures.php \
-    src \
-    vendor \
-    LICENSE.txt \
-    README.md \
-    example.yaml
+  # hackishly create a symlink wp-yaml-fixtures directory, so that when
+  # extracted, the archives we create have a top-level directory
+  ln -sfn . wp-yaml-fixtures
+
+  # archive plugins distro files inside a top-level wp-yaml-fixtures/ dir
+  zip -r "${zip_name}" \
+    wp-yaml-fixtures/yaml-fixtures.php \
+    wp-yaml-fixtures/src \
+    wp-yaml-fixtures/vendor \
+    wp-yaml-fixtures/LICENSE.txt \
+    wp-yaml-fixtures/README.md
+
+  # remove hackish symlink
+  rm ./wp-yaml-fixtures
 
   restore_vendor
 
-  echo "Created ${archive_name}"
+  echo "Created ${tar_name}, ${zip_name}"
 }
 
 function backup_vendor() {
