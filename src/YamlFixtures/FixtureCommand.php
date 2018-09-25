@@ -12,6 +12,7 @@ use WP_CLI_Command;
 
 use YamlFixtures\Fixture\FixtureFactory;
 use YamlFixtures\Fixture\BlankSlateFixture;
+use YamlFixtures\Fixture\HomePageSlugFixture;
 use YamlFixtures\Fixture\OptionsFixture;
 use YamlFixtures\Fixture\UsersFixture;
 use YamlFixtures\Fixture\TaxonomiesFixture;
@@ -27,6 +28,7 @@ class FixtureCommand extends WP_CLI_Command {
     UsersFixture::class,
     TaxonomiesFixture::class,
     PostsFixture::class,
+    HomePageSlugFixture::class,
   ];
 
   /**
@@ -52,10 +54,10 @@ class FixtureCommand extends WP_CLI_Command {
    *
    * @when after_wp_load
    */
-  public function install( $args, $assoc_args ) {
+  public function install( $args, $options ) {
     $file = $args[0];
 
-    WP_CLI::confirm( 'This will destroy your database content. Are you sure?', $assoc_args );
+    WP_CLI::confirm( 'This may destroy your database content. Are you sure?', $options );
 
     try {
       $definitions = Yaml::parseFile($file);

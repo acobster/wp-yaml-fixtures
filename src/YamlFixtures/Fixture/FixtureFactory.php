@@ -16,11 +16,12 @@ class FixtureFactory {
    * @var array
    */
   const TYPES = [
-    'name'        => OptionsFixture::class,
-    'blank_slate' => BlankSlateFixture::class,
-    'posts'       => PostsFixture::class,
-    'taxonomies'  => TaxonomiesFixture::class,
-    'users'       => UsersFixture::class,
+    'name'           => OptionsFixture::class,
+    'home_page_slug' => HomePageSlugFixture::class,
+    'blank_slate'    => BlankSlateFixture::class,
+    'posts'          => PostsFixture::class,
+    'taxonomies'     => TaxonomiesFixture::class,
+    'users'          => UsersFixture::class,
   ];
 
   /**
