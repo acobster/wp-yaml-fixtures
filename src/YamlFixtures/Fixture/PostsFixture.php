@@ -12,6 +12,7 @@ class PostsFixture extends Fixture {
     'date'    => 'post_date',
     'author'  => 'post_author',
     'parent'  => 'post_parent',
+    'status'  => 'post_status',
   ];
 
   const FILTERS = [
