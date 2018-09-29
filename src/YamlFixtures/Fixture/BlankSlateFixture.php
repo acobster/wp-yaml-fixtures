@@ -19,6 +19,21 @@ class BlankSlateFixture extends Fixture {
    */
   public function install() : bool {
     // TODO just call WP_CLI db reset
+    $this->remove_posts();
+    $this->remove_terms();
+    $this->remove_users();
+
+    return true;
+  }
+
+  /**
+   * Removes all posts from the database, unless explicitly configured not to.
+   */
+  protected function remove_posts() {
+    if (!$this->should_remove_posts()) {
+      return;
+    }
+
     foreach (get_post_types() as $type) {
       $posts = get_posts([
         'post_type'   => $type,
@@ -29,6 +44,25 @@ class BlankSlateFixture extends Fixture {
       foreach ($posts as $post) {
         wp_delete_post($post->ID);
       }
+    }
+  }
+
+  /**
+   * Whether to remove posts. Defaults to true unless explicitly set to
+   * `false` (the actual value, not just a falsey value) by the user
+   *
+   * @return bool
+   */
+  protected function should_remove_posts() : bool {
+    return ($this->definition['posts'] ?? true) !== false;
+  }
+
+  /**
+   * Removes all terms from the database, unless explicitly configured not to.
+   */
+  protected function remove_terms() {
+    if (!$this->should_remove_terms()) {
+      return;
     }
 
     foreach (get_taxonomies() as $tax) {
@@ -41,10 +75,16 @@ class BlankSlateFixture extends Fixture {
         wp_delete_term($term->term_id, $tax);
       }
     }
+  }
 
-    $this->remove_users();
-
-    return true;
+  /**
+   * Whether to remove terms. Defaults to true unless explicitly set to
+   * `false` (the actual value, not just a falsey value) by the user
+   *
+   * @return bool
+   */
+  protected function should_remove_terms() : bool {
+    return ($this->definition['terms'] ?? true) !== false;
   }
 
   /**
