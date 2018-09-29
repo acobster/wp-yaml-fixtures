@@ -12,17 +12,6 @@ use WP_User;
  * Class for wiping WP database of users, posts, etc.
  */
 class BlankSlateFixture extends Fixture {
-  const POST_STATUSES = [
-    'publish',
-    'pending',
-    'draft',
-    'auto-draft',
-    'future',
-    'private',
-    'inherit',
-    'trash',
-  ];
-
   /**
    * Install this fixture.
    *
@@ -34,7 +23,7 @@ class BlankSlateFixture extends Fixture {
       $posts = get_posts([
         'post_type'   => $type,
         'numberposts' => -1,
-        'post_status' => static::POST_STATUSES,
+        'post_status' => get_post_stati(),
       ]);
 
       foreach ($posts as $post) {
