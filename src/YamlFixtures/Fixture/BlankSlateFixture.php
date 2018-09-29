@@ -42,14 +42,35 @@ class BlankSlateFixture extends Fixture {
       }
     }
 
+    $this->remove_users();
+
+    return true;
+  }
+
+  /**
+   * Removes all users from the database, unless explicitly configured not to.
+   */
+  protected function remove_users() {
+    if (!$this->should_remove_users()) {
+      return;
+    }
+
     $users = array_filter(get_users(), function(WP_User $user) {
       return !$this->preserve_user($user);
     });
     foreach ($users as $user) {
       wp_delete_user($user->ID);
     }
+  }
 
-    return true;
+  /**
+   * Whether to remove users. Defaults to true unless explicitly set to
+   * `false` (the actual value, not just a falsey value) by the user
+   *
+   * @return bool
+   */
+  protected function should_remove_users() : bool {
+    return ($this->definition['users'] ?? true) !== false;
   }
 
   /**
