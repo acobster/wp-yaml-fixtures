@@ -23,7 +23,6 @@ class UserFixtureTest extends Base {
           'user_pass'   => 'passw0rd',
         ],
       ],
-      'return'  => 123,
     ]);
 
     $fixture = new UsersFixture('user', [
@@ -31,6 +30,60 @@ class UserFixtureTest extends Base {
         'email'    => 'dusty@example.com',
         'login'    => 'dusty',
         'password' => 'passw0rd',
+      ],
+    ]);
+
+    $this->assertTrue($fixture->install());
+  }
+
+  public function test_install_multiple() {
+    // expect exactly three insertions
+    WP_Mock::userFunction('wp_insert_user', [
+      'times'   => 1,
+      'args'    => [
+        [
+          'user_email'  => 'dusty@example.com',
+          'user_login'  => 'dusty',
+          'user_pass'   => 'passw0rd',
+        ],
+      ],
+    ]);
+    WP_Mock::userFunction('wp_insert_user', [
+      'times'   => 1,
+      'args'    => [
+        [
+          'user_email'  => 'rusty@example.com',
+          'user_login'  => 'rusty',
+          'user_pass'   => 'passw0rd',
+        ],
+      ],
+    ]);
+    WP_Mock::userFunction('wp_insert_user', [
+      'times'   => 1,
+      'args'    => [
+        [
+          'user_email'  => 'krusty@example.com',
+          'user_login'  => 'krusty',
+          'user_pass'   => 'heyK!ds',
+        ],
+      ],
+    ]);
+
+    $fixture = new UsersFixture('user', [
+      [
+        'email'    => 'dusty@example.com',
+        'login'    => 'dusty',
+        'password' => 'passw0rd',
+      ],
+      [
+        'email'    => 'rusty@example.com',
+        'login'    => 'rusty',
+        'password' => 'passw0rd',
+      ],
+      [
+        'email'    => 'krusty@example.com',
+        'login'    => 'krusty',
+        'password' => 'heyK!ds',
       ],
     ]);
 
