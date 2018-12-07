@@ -26,6 +26,18 @@ class UserFixtureTest extends Base {
       'return'  => 123,
     ]);
 
+    $fixture = new UsersFixture('user', [
+      [
+        'email'    => 'dusty@example.com',
+        'login'    => 'dusty',
+        'password' => 'passw0rd',
+      ],
+    ]);
+
+    $this->assertTrue($fixture->install());
+  }
+
+  public function test_install_with_meta() {
     // expect user "rusty" to be inserted w/ ID 456
     WP_Mock::userFunction('wp_insert_user', [
       'times'     => 1,
@@ -52,11 +64,6 @@ class UserFixtureTest extends Base {
     ]);
 
     $fixture = new UsersFixture('user', [
-      [
-        'email'    => 'dusty@example.com',
-        'login'    => 'dusty',
-        'password' => 'passw0rd',
-      ],
       [
         'email'    => 'rusty@example.com',
         'login'    => 'rusty',
