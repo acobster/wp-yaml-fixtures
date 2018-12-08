@@ -43,19 +43,26 @@ abstract class Fixture {
   }
 
   protected function replace_names(array $definition) {
-    return array_reduce(array_keys($definition), function(
+    $fields = array_reduce(array_keys($definition), function(
       array $args,
       string $key
     ) use ($definition) {
-      $args[$this->name($key)] = $definition[$key];
+      $name  = $this->name($key);
+      $value = $definition[$key];
 
-      foreach (static::FILTERS as $k => $default) {
-        $value    = $args[$k] ?? null;
-        $args[$k] = $this->filter_value($value, $default);
-      }
+      // see if a filter exists for this field
+      $filter = static::FILTERS[$name] ?? null;
+      $args[$name] = $this->filter_value($value, $filter);
 
       return $args;
     }, []);
+
+    // apply defaults
+    foreach (static::FILTERS as $name => $filter) {
+      $fields[$name] = $fields[$name] ?? $this->filter_value(null, $filter);
+    }
+
+    return $fields;
   }
 
   protected function filter_value($value, $filter) {
