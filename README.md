@@ -1,5 +1,7 @@
 # WP YAML Fixtures
 
+[![Build Status](https://travis-ci.org/acobster/wp-yaml-fixtures.svg?branch=master)](https://travis-ci.org/acobster/wp-yaml-fixtures)
+
 A WP-CLI command for describing your WordPress database content in, and importing from, YAML files. Built for testing and scaffolding quickly.
 
 ### Getting Started
