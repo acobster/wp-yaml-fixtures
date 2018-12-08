@@ -12,6 +12,8 @@ use WP_Mock\Functions;
 use YamlFixtures\Fixture\UsersFixture;
 
 /**
+ * Test UsersFixture
+ *
  * @group unit
  */
 class UserFixtureTest extends Base {

@@ -11,6 +11,8 @@ use WP_Mock;
 use YamlFixtures\Fixture\OptionsFixture;
 
 /**
+ * Test OptionsFixture
+ *
  * @group unit
  */
 class OptionsFixtureTest extends Base {
