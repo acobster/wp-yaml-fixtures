@@ -2,7 +2,7 @@ name: yaml-fixtures
 recipe: wordpress
 config:
   webroot: wp
-  php: '7.1'
+  php: '7.0'
 
 services:
   appserver:
@@ -33,7 +33,7 @@ tooling:
 
   unit:
     service: appserver
-    cmd: 'vendor/bin/phpunit'
+    cmd: 'vendor/bin/phpunit --group unit'
     description: 'Run unit tests'
 
   sniff:
