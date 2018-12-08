@@ -11,6 +11,9 @@ use WP_Mock\Functions;
 
 use YamlFixtures\Fixture\UsersFixture;
 
+/**
+ * @group unit
+ */
 class UserFixtureTest extends Base {
   public function test_install() {
     // expect user "dusty" to be inserted w/ ID 123

@@ -11,6 +11,9 @@ use WP_Mock\Functions;
 
 use YamlFixtures\Fixture\PostsFixture;
 
+/**
+ * @group unit
+ */
 class PostsFixtureTest extends Base {
   public function test_install() {
     $fixture = new PostsFixture('post', [
