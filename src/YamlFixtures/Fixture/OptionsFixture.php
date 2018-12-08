@@ -1,13 +1,25 @@
 <?php
 
+/**
+ * OptionsFixture class
+ */
+
 namespace YamlFixtures\Fixture;
 
+/**
+ * Fixture for WP options
+ */
 class OptionsFixture extends Fixture {
   const NAMES = [
     'name'        => 'blogname',
     'description' => 'blogdescription',
   ];
 
+  /**
+   * Install this fixture
+   *
+   * @inheritdoc
+   */
   public function install() : bool {
     update_option(
       $this->name($this->key),
@@ -15,9 +27,5 @@ class OptionsFixture extends Fixture {
     );
 
     return true;
-  }
-
-  protected function name($name) {
-    return static::NAMES[$name] ?? $name;
   }
 }

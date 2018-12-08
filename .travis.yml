@@ -19,8 +19,7 @@ install: composer install --prefer-dist
 
 script:
   - composer test
-  # uncomment to enforce coding standards:
-  #- composer sniff
+  - composer sniff
 
 
 # Test WP YAML Fixtures against PHP 7.x and run end-to-end tests

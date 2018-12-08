@@ -1,9 +1,16 @@
 <?php
 
+/**
+ * UsersFixture class
+ */
+
 namespace YamlFixtures\Fixture;
 
 use RandomLib\Factory;
 
+/**
+ * Fixture for WP users
+ */
 class UsersFixture extends Fixture {
   /**
    * The character set to user for generating random passwords
@@ -25,27 +32,32 @@ class UsersFixture extends Fixture {
    */
   const USER_INSERT_FIELDS = [
     'ID',
-		'user_pass',
-		'user_login',
-		'user_nicename',
-		'user_url',
-		'user_email',
-		'display_name',
-		'nickname',
-		'first_name',
-		'last_name',
-		'description',
-		'rich_editing',
-		'syntax_highlighting',
-		'comment_shortcuts',
-		'admin_color',
-		'use_ssl',
-		'user_registered',
-		'show_admin_bar_front',
-		'role',
-		'locale',
+        'user_pass',
+        'user_login',
+        'user_nicename',
+        'user_url',
+        'user_email',
+        'display_name',
+        'nickname',
+        'first_name',
+        'last_name',
+        'description',
+        'rich_editing',
+        'syntax_highlighting',
+        'comment_shortcuts',
+        'admin_color',
+        'use_ssl',
+        'user_registered',
+        'show_admin_bar_front',
+        'role',
+        'locale',
   ];
 
+  /**
+   * Install this fixture
+   *
+   * @inheritdoc
+   */
   public function install() : bool {
     foreach ($this->definition as $user) {
       $this->replace_names($user);
@@ -72,6 +84,9 @@ class UsersFixture extends Fixture {
     );
   }
 
+  /**
+   * Insert user meta fields according to the fixture data
+   */
   protected function insert_meta_fields(int $id, array $user) {
     if (!isset($user['meta'])) {
       return;
@@ -82,6 +97,9 @@ class UsersFixture extends Fixture {
     }
   }
 
+  /**
+   * Add user meta fields
+   */
   protected function add_user_meta(int $id, string $key, $value) {
     if (!is_array($value)) {
       $value = [$value];
@@ -92,7 +110,12 @@ class UsersFixture extends Fixture {
     }
   }
 
-  protected function generate_password() {
+  /**
+   * Generate a new, cryptographically secure password
+   *
+   * @return string a random 32-character string
+   */
+  protected function generate_password() : string {
     return (new Factory())->getMediumStrengthGenerator()->generateString(32);
   }
 }

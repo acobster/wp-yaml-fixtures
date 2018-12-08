@@ -1,7 +1,14 @@
 <?php
 
+/**
+ * PostsFixture class
+ */
+
 namespace YamlFixtures\Fixture;
 
+/**
+ * Fixture for WP posts of all types
+ */
 class PostsFixture extends Fixture {
   /**
    * Supported wp_posts column names. Note that not all native WP names are
@@ -56,6 +63,11 @@ class PostsFixture extends Fixture {
    */
   protected $slug_to_id_map = [];
 
+  /**
+   * Install this fixture
+   *
+   * @inheritdoc
+   */
   public function install() : bool {
     $posts = array_map([$this, 'replace_names'], $this->definition);
 
@@ -87,6 +99,13 @@ class PostsFixture extends Fixture {
     return true;
   }
 
+  /**
+   * Insert post metadata
+   *
+   * @param int $id the post ID
+   * @param array $args the post data. If no `meta` key is present,
+   * this method does nothing.
+   */
   protected function insert_post_meta(int $id, array $args) {
     if (!isset($args['meta'])) {
       return;
@@ -97,6 +116,14 @@ class PostsFixture extends Fixture {
     }
   }
 
+  /**
+   * Adds data for meta field `$key`.
+   * If `$value` is an array, inserts a row per index.
+   *
+   * @param int $id the post ID
+   * @param string $key the meta key
+   * @param mixed $value the meta value(s) to add for $key
+   */
   protected function add_post_meta(int $id, string $key, $value) {
     if (!is_array($value)) {
       $value = [$value];
@@ -107,6 +134,13 @@ class PostsFixture extends Fixture {
     }
   }
 
+  /**
+   * Insert terms for this post.
+   *
+   * @param int $id the post ID
+   * @param array $args the post data. If no `terms` key is present,
+   * this method does nothing.
+   */
   protected function set_post_terms(int $id, array $args) {
     if (!isset($args['terms'])) {
       return;
@@ -117,6 +151,13 @@ class PostsFixture extends Fixture {
     }
   }
 
+  /**
+   * Returns the post_author ID `$id`, or if `$id` is blank,
+   * the ID of the first WP user it finds
+   *
+   * @param int|null $id the post_author
+   * @return int
+   */
   protected static function any_author($id) {
     if ($id) {
       return $id;
@@ -130,6 +171,12 @@ class PostsFixture extends Fixture {
     return $users[0]->ID ?? 1;
   }
 
+  /**
+   * Get the ID corresponding to the slug of a previously inserted post
+   *
+   * @param string $slug the slug to lookup
+   * @return int|null
+   */
   protected function slug_to_id(string $slug) {
     return $this->slug_to_id_map[$slug] ?? null;
   }

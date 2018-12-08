@@ -67,7 +67,7 @@ class PostsFixtureTest extends Base {
           'post_status'  => 'publish',
         ],
       ],
-      'return' => 123
+      'return' => 123,
     ]);
 
     WP_Mock::userFunction('wp_insert_post', [

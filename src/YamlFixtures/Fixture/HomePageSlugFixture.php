@@ -1,8 +1,20 @@
 <?php
 
+/**
+ * HomePageSlugFixture class
+ */
+
 namespace YamlFixtures\Fixture;
 
+/**
+ * Fixture for setting the home page ("page_on_front") WP option
+ */
 class HomePageSlugFixture extends Fixture {
+  /**
+   * Install this fixture
+   *
+   * @inheritdoc
+   */
   public function install() : bool {
     $homePageId = $this->slug_to_id($this->definition);
 

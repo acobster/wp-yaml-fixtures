@@ -96,12 +96,6 @@ class UserFixtureTest extends Base {
       'times'     => 1,
       'args'      => [
         Functions::type('array'),
-        // TODO fix/implement recursive array checks in wp_mock, so this works:
-        //[
-        //  'user_email'  => 'rusty@example.com',
-        //  'user_login'  => 'rusty',
-        //  'user_pass'   => Functions::type('string'),
-        //],
       ],
       'return'    => 456,
     ]);

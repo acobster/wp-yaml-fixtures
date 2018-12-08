@@ -14,7 +14,7 @@ if ( ! defined('WP_CLI') || ! WP_CLI ) {
 use YamlFixtures\FixtureCommand;
 
 // check for autoload file in well-known places
-foreach([
+foreach ([
   __DIR__ . '/vendor/autoload.php',
   __DIR__ . '/../../autoload.php',
 ] as $autoload) {
