@@ -17,18 +17,20 @@ language: php
 
 install: composer install --prefer-dist
 
+php:
+- '7.0'
+- '7.1'
+- '7.2'
+
 script:
   - composer test
-  - composer sniff
 
 
 # Test WP YAML Fixtures against PHP 7.x and run end-to-end tests
 matrix:
   include:
-    - name: '7.0 unit tests'
-      php: 7.0
-    - name: '7.1 unit tests'
-      php: 7.1
-    - name: '7.2 unit tests'
-      php: 7.2
+    - name: 'Coding standards'
+      script: composer sniff
 
+  allow_failures:
+    - name: 'Coding standards'
