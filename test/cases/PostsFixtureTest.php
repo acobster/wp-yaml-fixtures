@@ -240,4 +240,50 @@ class PostsFixtureTest extends Base {
 
     $this->assertTrue($fixture->install());
   }
+
+  public function test_post_install_with_associated_user() {
+    WP_Mock::userFunction('wp_insert_post', [
+      'times'  => 1,
+      'return' => 123,
+    ]);
+
+    // mock our user ID
+    $user     = new \stdclass();
+    $user->ID = 3;
+
+    WP_Mock::userFunction('get_user_by', [
+      'times'  => 1,
+      'args'   => [
+        'email',
+        'me@example.com',
+      ],
+      'return' => $user,
+    ]);
+
+    WP_Mock::userFunction('add_post_meta', [
+      'times' => 1,
+      'args'  => [
+        123,
+        'associated_user',
+        3, // this is the ID we got from get_user_by
+      ],
+    ]);
+
+    $fixture = new PostsFixture('post', [
+      [
+        'title'        => 'My Frist Post',
+        'slug'         => 'my-frist-post',
+        'author'       => 1,
+        'associations' => [
+          [
+            'meta_key'   => 'associated_user',
+            'type'       => 'user',
+            'email'      => 'me@example.com',
+          ],
+        ],
+      ],
+    ]);
+
+    $this->assertTrue($fixture->install());
+  }
 }

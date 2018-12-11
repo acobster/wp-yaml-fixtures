@@ -107,13 +107,38 @@ class PostsFixture extends Fixture {
    * this method does nothing.
    */
   protected function insert_post_meta(int $id, array $args) {
-    if (!isset($args['meta'])) {
+    if (empty($args['meta']) && empty($args['associations'])) {
       return;
     }
 
-    foreach ($args['meta'] as $key => $value) {
+    // build associations and merge them with hard-coded meta fields
+    $meta = array_merge(
+      $args['meta'] ?? [],
+      $this->build_associations($args['associations'] ?? [])
+    );
+
+    foreach ($meta as $key => $value) {
       $this->add_post_meta($id, $key, $value);
     }
+  }
+
+  protected function build_associations(array $fields) : array {
+    return array_reduce($fields, function($data, $association) {
+      if (!isset($association['meta_key'])) {
+        return $data;
+      }
+
+      $data[$association['meta_key']] = $this->build_association($association);
+
+      return $data;
+    }, []);
+  }
+
+  protected function build_association(array $definition) {
+    // TODO other types of associations via Factory
+    $user = get_user_by('email', $definition['email']);
+
+    return $user->ID;
   }
 
   /**

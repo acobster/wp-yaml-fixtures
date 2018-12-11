@@ -65,6 +65,10 @@ posts:
     - custom-term-slug
     - another
     - and-another
+  associations:
+  - meta_key: associated_user
+    type: user
+    email: admin@example.com
 
 # Define taxonomy terms
 taxonomies:
