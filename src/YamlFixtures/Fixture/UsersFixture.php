@@ -23,6 +23,7 @@ class UsersFixture extends Fixture {
     'login'    => 'user_login',
     'email'    => 'user_email',
     'password' => 'user_pass',
+    'nicename' => 'user_nicename',
   ];
 
   /**
