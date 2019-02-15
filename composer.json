@@ -13,7 +13,8 @@
     "require": {
       "php": ">=7.0",
       "symfony/yaml": "^3.4",
-        "ircmaxell/random-lib": "^1.1@dev"
+        "ircmaxell/random-lib": "^1.1@dev",
+        "greenlion/php-sql-parser": "dev-master"
     },
     "require-dev": {
       "10up/wp_mock": "^0.3",
