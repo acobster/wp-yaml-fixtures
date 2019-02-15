@@ -49,4 +49,30 @@ abstract class Base extends TestCase {
 
     return $method->invokeArgs($object, $args);
   }
+
+  protected function mockWpdb() {
+    $wpdb = $this->getMockBuilder(wpdb::class)
+      ->setMockClassName(\wpdb::class)
+      ->setMethods([
+        'get_results',
+        // TODO add more
+      ])
+      ->getMock();
+
+    // TODO make prefix configurable
+    // https://core.trac.wordpress.org/browser/trunk/src/wp-includes/wp-db.php#L259
+    $wpdb->posts              = 'wp_posts';
+    $wpdb->comments           = 'wp_comments';
+    $wpdb->links              = 'wp_links';
+    $wpdb->options            = 'wp_options';
+    $wpdb->postmeta           = 'wp_postmeta';
+    $wpdb->terms              = 'wp_terms';
+    $wpdb->term_taxonomy      = 'wp_term_taxonomy';
+    $wpdb->term_relationships = 'wp_term_relationships';
+    $wpdb->termmeta           = 'wp_termmeta';
+    $wpdb->commentmeta        = 'wp_commentmeta';
+    $wpdb->users              = 'wp_users';
+
+    return $wpdb;
+  }
 }
