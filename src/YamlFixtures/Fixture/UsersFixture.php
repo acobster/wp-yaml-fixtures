@@ -116,6 +116,6 @@ class UsersFixture extends Fixture {
    * @return string a random 32-character string
    */
   protected function generate_password() : string {
-    return (new Factory())->getMediumStrengthGenerator()->generateString(32);
+    return @(new Factory())->getMediumStrengthGenerator()->generateString(32);
   }
 }
