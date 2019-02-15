@@ -35,4 +35,3 @@ matrix:
 
   allow_failures:
     - name: 'Coding standards'
-    - php: '7.3'
