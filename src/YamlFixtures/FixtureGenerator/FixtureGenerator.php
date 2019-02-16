@@ -7,7 +7,9 @@
 namespace YamlFixtures\FixtureGenerator;
 
 use YamlFixtures\Fixture\FixtureFactory;
+use YamlFixtures\Fixture\OptionsFixture;
 
+use InvalidArgumentException;
 use PHPSQLParser\PHPSQLParser;
 use wpdb;
 
@@ -24,6 +26,7 @@ class FixtureGenerator implements FixtureGeneratorInterface {
     'posts',
     'users',
     'options',
+    'usermeta',
   ];
 
   /** @var \wpdb */
@@ -56,21 +59,25 @@ class FixtureGenerator implements FixtureGeneratorInterface {
       return [];
     }
 
-    $parsedQueryTrees = array_map(
-      [$this->parser, 'parse'],
-      $this->get_recorded_queries()
-    );
-
     // start with a blank fixture and build it up from our query trees
     return array_reduce(
-      $parsedQueryTrees,
+      $this->get_recorded_queries(),
       [$this, 'merge_query_tree_into_fixture'],
       []
     );
   }
 
-  public function record_query(string $sql) {
-    $this->recorded_queries[] = $sql;
+  public function record_write(string $sql) {
+    $parsed = $this->parser->parse($sql);
+
+    // FIXME support UPDATE
+    if (isset($parsed['INSERT'])) {
+      $this->recorded_queries[] = [
+        // TODO record id somehow??
+        'sql' => $sql,
+        'parsed' => $parsed,
+      ];
+    }
   }
 
   /**
@@ -82,12 +89,8 @@ class FixtureGenerator implements FixtureGeneratorInterface {
     return $this->recorded_queries;
   }
 
-  protected function merge_query_tree_into_fixture(array $fixture, array $tree) : array {
-    // TODO handle UPDATE ...somehow??
-    if (!isset($tree['INSERT'])) {
-      // this isn't a database write
-      return $fixture;
-    }
+  protected function merge_query_tree_into_fixture(array $fixture, array $query) : array {
+    $tree = $query['parsed'];
 
     //print_r($tree['SET']);die();
     // find the table expression
@@ -129,7 +132,7 @@ class FixtureGenerator implements FixtureGeneratorInterface {
         }
 
         if ( ! (isset($column) && isset($value)) ) {
-          throw new \InvalidArgument(sprintf(
+          throw new InvalidArgument(sprintf(
             "Couldn't determine column/value pair for expression: %s",
             var_export($expr, true)
           ));
@@ -153,7 +156,7 @@ class FixtureGenerator implements FixtureGeneratorInterface {
 
   protected function table_key(string $table) : string {
     foreach (static::TABLE_SHORTHANDS as $key) {
-      if ($this->wpdb->$key === $table) {
+      if ($this->wpdb->$key === trim($table, '`')) {
         return $key;
       }
     }

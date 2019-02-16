@@ -6,8 +6,7 @@
 
 namespace YamlFixtures\FixtureGenerator;
 
-use YamlFixtures\Fixture\FixtureFactory;
-
+use InvalidArgumentException;
 use PHPSQLParser\PHPSQLParser;
 use Symfony\Component\Yaml\Yaml;
 use wpdb;
@@ -24,7 +23,7 @@ class FixtureFileGenerator extends FixtureGenerator {
     parent::__construct($wpdb, $options);
 
     if (empty($options['output_file'])) {
-      throw new \InvalidArgumentException('No output_file specified!');
+      throw new InvalidArgumentException('No output_file specified!');
     }
   }
 
