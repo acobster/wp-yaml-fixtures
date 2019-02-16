@@ -1,7 +1,7 @@
 <?php
 
 /**
- * FixtureGeneratorFactory class
+ * RecordingFixtureGenerator class
  */
 
 namespace YamlFixtures\FixtureGenerator;
@@ -11,12 +11,13 @@ use YamlFixtures\Fixture\OptionsFixture;
 
 use InvalidArgumentException;
 use PHPSQLParser\PHPSQLParser;
+use Symfony\Component\Yaml\Yaml;
 use wpdb;
 
 /**
  * Class for generating Fixture YAML from (valid) SQL queries
  */
-class FixtureGenerator implements FixtureGeneratorInterface {
+class RecordingFixtureGenerator implements FixtureGeneratorInterface {
   /**
    * Types of generator classes, keyed by WP table name
    *

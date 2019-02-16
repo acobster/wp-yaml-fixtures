@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Tests for the YamlFixtures\FixtureGenerator\FixtureGenerator class
+ * Tests for the YamlFixtures\FixtureGenerator\RecordingFixtureGenerator class
  */
 
 namespace YamlFixturesTest;
@@ -9,25 +9,25 @@ namespace YamlFixturesTest;
 use WP_Mock;
 use WP_Mock\Functions;
 
-use YamlFixtures\FixtureGenerator\FixtureGenerator;
+use YamlFixtures\FixtureGenerator\RecordingFixtureGenerator;
 
 /**
- * Test FixtureGenerator
+ * Test RecordingFixtureGenerator
  *
  * @group unit
  */
-class FixtureGeneratorTest extends Base {
+class RecordingFixtureGeneratorTest extends Base {
   /** @var \wbdb */
   private $wpdb;
 
-  /** @var FixtureGenerator */
+  /** @var RecordingFixtureGenerator */
   private $generator;
 
   public function setUp() {
     parent::setUp();
 
     $this->wpdb = $this->mockWpdb();
-    $this->generator = new FixtureGenerator($this->wpdb);
+    $this->generator = new RecordingFixtureGenerator($this->wpdb);
   }
 
   public function test_generate_empty() {
