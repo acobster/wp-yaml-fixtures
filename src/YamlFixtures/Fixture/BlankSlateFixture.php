@@ -18,7 +18,6 @@ class BlankSlateFixture extends Fixture {
    * @inheritdoc
    */
   public function install() : bool {
-    // TODO just call WP_CLI db reset
     $this->remove_posts();
     $this->remove_terms();
     $this->remove_users();
