@@ -93,6 +93,86 @@ class PostsFixtureTest extends Base {
     $this->assertTrue($fixture->install());
   }
 
+  public function test_install_with_duplicate_slugs() {
+    /*
+     * WordPress will gracefully handle duplicate slugs at INSERT time by
+     * appending unique integers. However, Fixtures can't tell when a slug
+     * is overridden in this way just by calling wp_insert_post. For this
+     * reason, we need to make sure we are not overwriting duplicate slugs
+     * in the slug->id mapping that Fixtures track internally.
+     */
+    $fixture = new PostsFixture('post', [
+      [
+        'title'   => 'Parent',
+        'slug'    => 'duplicate-slug',
+        'content' => 'This is the parent post',
+        'author'  => 1,
+      ],
+      [
+        'title'   => 'Son',
+        'slug'    => 'duplicate-slug',
+        'content' => 'This is a child post',
+        'author'  => 1,
+        'parent'  => 'duplicate-slug',
+      ],
+      [
+        'title'   => 'Daughter',
+        'slug'    => 'duplicate-slug',
+        'content' => 'This is another child post',
+        'author'  => 1,
+        'parent'  => 'duplicate-slug',
+      ],
+    ]);
+
+    WP_Mock::userFunction('wp_insert_post', [
+      'times' => 1,
+      'args'  => [
+        [
+          'post_title'   => 'Parent',
+          'post_name'    => 'duplicate-slug',
+          'post_content' => 'This is the parent post',
+          'post_author'  => 1,
+          'post_status'  => 'publish',
+        ],
+      ],
+      'return' => 123,
+    ]);
+
+    /*
+     * Assert that both children get the correct post_parent ID
+     */
+    WP_Mock::userFunction('wp_insert_post', [
+      'times' => 1,
+      'args'  => [
+        [
+          'post_title'   => 'Son',
+          'post_name'    => 'duplicate-slug',
+          'post_content' => 'This is a child post',
+          'post_author'  => 1,
+          'post_status'  => 'publish',
+          'post_parent'  => 123,
+        ],
+      ],
+      'return' => 456,
+    ]);
+    WP_Mock::userFunction('wp_insert_post', [
+      'times' => 1,
+      'args'  => [
+        [
+          'post_title'   => 'Daughter',
+          'post_name'    => 'duplicate-slug',
+          'post_content' => 'This is another child post',
+          'post_author'  => 1,
+          'post_status'  => 'publish',
+          'post_parent'  => 123,
+        ],
+      ],
+      'return' => 789,
+    ]);
+
+    $this->assertTrue($fixture->install());
+  }
+
   public function test_install_without_slug() {
     $fixture = new PostsFixture('post', [
       [
