@@ -149,6 +149,10 @@ taxonomies:
 ...
 ```
 
+## Support
+
+WP YAML Fixtures supports WordPress 4.8+ and PHP 7.0 through 7.2.x. Support for PHP 7.3 is a work in progress.
+
 ## License
 
 MIT
