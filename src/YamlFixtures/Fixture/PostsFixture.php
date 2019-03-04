@@ -90,7 +90,9 @@ class PostsFixture extends Fixture {
       $id = wp_insert_post($post);
 
       // save a mapping of the new post's slug to its ID
-      $this->slug_to_id_map[$args['post_name']] = $id;
+      if (!isset($this->slug_to_id_map[$args['post_name']])) {
+        $this->slug_to_id_map[$args['post_name']] = $id;
+      }
 
       $this->insert_post_meta($id, $args);
       $this->set_post_terms($id, $args);
