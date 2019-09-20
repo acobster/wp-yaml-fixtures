@@ -219,7 +219,7 @@ class PostsFixture extends Fixture {
    * @return array the term names or IDs
    */
   protected function get_term_fields_by_slug(array $slugs, string $taxonomy) : array {
-    $field = is_taxonomy_hierarchical($taxonomy) ? 'names' : 'ids';
+    $field = is_taxonomy_hierarchical($taxonomy) ? 'ids' : 'names';
 
     return get_terms([
       'slug'       => $slugs,

@@ -318,16 +318,16 @@ class PostsFixtureTest extends Base {
           'taxonomy'   => 'category',
           'hide_empty' => false,
           'slug'       => ['my-category', 'some-other-category'],
-          'fields'     => 'names',
+          'fields'     => 'ids',
         ],
       ],
-      'return' => ['My Category', 'Some Other Category'], // return term names
+      'return' => [456, 789], // return term IDs
     ]);
     WP_Mock::userFunction('wp_set_post_terms', [
       'times' => 1,
       'args'  => [
         123,
-        ['My Category', 'Some Other Category'], // pass term names
+        [456, 789], // pass term IDs
         'category',
         false,
       ],
@@ -345,16 +345,16 @@ class PostsFixtureTest extends Base {
           'taxonomy'   => 'custom_taxonomy',
           'hide_empty' => false,
           'slug'       => ['special', 'but-also-not-so-special'],
-          'fields'     => 'ids',
+          'fields'     => 'names',
         ],
       ],
-      'return' => [456, 789], // return term IDs
+      'return' => ['Special', 'But Also Not So Special'], // return term names
     ]);
     WP_Mock::userFunction('wp_set_post_terms', [
       'times' => 1,
       'args'  => [
         123,
-        [456, 789], // pass term IDs
+        ['Special', 'But Also Not So Special'], // pass term names
         'custom_taxonomy',
         false,
       ],
