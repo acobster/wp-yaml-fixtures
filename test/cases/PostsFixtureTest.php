@@ -293,26 +293,68 @@ class PostsFixtureTest extends Base {
       'return' => 123,
     ]);
 
-    WP_Mock::userFunction('wp_set_post_terms', [
+    /*
+     * The correct thing to pass to wp_set_post_terms() depends on whether
+     * the taxonomy is hierarchical, because of course it does. From the docs:
+     *
+     * "If you want to enter terms of a hierarchical taxonomy like categories,
+     * then use IDs. If you want to add non-hierarchical terms like tags, then
+     * use names. "
+     *
+     * https://codex.wordpress.org/Function_Reference/wp_set_post_terms
+     *
+     * For this reason, we need to first call is_taxonomy_hierarchical() for
+     * each taxonomy block within this post.
+     */
+    WP_Mock::userFunction('is_taxonomy_hierarchical', [
+      'times' => 1,
+      'args'  => ['category'],
+      'return' => true,
+    ]);
+    WP_Mock::userFunction('get_terms', [
       'times' => 1,
       'args'  => [
-        123,
         [
-          'my-category',
-          'some-other-category',
+          'taxonomy'   => 'category',
+          'hide_empty' => false,
+          'slug'       => ['my-category', 'some-other-category'],
+          'fields'     => 'names',
         ],
-        'category',
-        false,
       ],
+      'return' => ['My Category', 'Some Other Category'], // return term names
     ]);
     WP_Mock::userFunction('wp_set_post_terms', [
       'times' => 1,
       'args'  => [
         123,
+        ['My Category', 'Some Other Category'], // pass term names
+        'category',
+        false,
+      ],
+    ]);
+
+    WP_Mock::userFunction('is_taxonomy_hierarchical', [
+      'times' => 1,
+      'args'  => ['custom_taxonomy'],
+      'return' => false,
+    ]);
+    WP_Mock::userFunction('get_terms', [
+      'times' => 1,
+      'args'  => [
         [
-          'special',
-          'but-also-not-so-special',
+          'taxonomy'   => 'custom_taxonomy',
+          'hide_empty' => false,
+          'slug'       => ['special', 'but-also-not-so-special'],
+          'fields'     => 'ids',
         ],
+      ],
+      'return' => [456, 789], // return term IDs
+    ]);
+    WP_Mock::userFunction('wp_set_post_terms', [
+      'times' => 1,
+      'args'  => [
+        123,
+        [456, 789], // pass term IDs
         'custom_taxonomy',
         false,
       ],

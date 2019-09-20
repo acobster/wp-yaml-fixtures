@@ -174,7 +174,8 @@ class PostsFixture extends Fixture {
     }
 
     foreach ($args['terms'] as $tax => $terms) {
-      wp_set_post_terms($id, $terms, $tax, false);
+      $termIdentifiers = $this->get_term_fields_by_slug($terms, $tax);
+      wp_set_post_terms($id, $termIdentifiers, $tax, false);
     }
   }
 
@@ -206,5 +207,25 @@ class PostsFixture extends Fixture {
    */
   protected function slug_to_id(string $slug) {
     return $this->slug_to_id_map[$slug] ?? null;
+  }
+
+  /**
+   * Get term Names or IDs by their corresponding slugs, depending on
+   * whether $taxonomy is hierarchical or not.
+   *
+   * @see https://developer.wordpress.org/reference/classes/wp_term_query/__construct/
+   * @param array $slugs the term slugs
+   * @param string $taxonomy the term taxonomy
+   * @return array the term names or IDs
+   */
+  protected function get_term_fields_by_slug(array $slugs, string $taxonomy) : array {
+    $field = is_taxonomy_hierarchical($taxonomy) ? 'names' : 'ids';
+
+    return get_terms([
+      'slug'       => $slugs,
+      'taxonomy'   => $taxonomy,
+      'fields'     => $field,
+      'hide_empty' => false,
+    ]);
   }
 }
